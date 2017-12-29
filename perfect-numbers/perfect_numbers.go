@@ -15,18 +15,25 @@ const (
 )
 
 func getAliquotSum(n int64) int64 {
-	var s, i int64
-	for i = 1; i <= n/2; i++ {
+	var s, i int64 = 1, 2
+	for ; i*i < n; i++ {
 		if n%i == 0 {
 			s += i
+			s += n / i
 		}
+	}
+	if i*i == n {
+		s += i
 	}
 	return s
 }
 
 func Classify(n int64) (Classification, error) {
-	if n <= 0 {
+	if n < 1 {
 		return ClassificationAbundant, ErrOnlyPositive
+	}
+	if n == 1 {
+		return ClassificationDeficient, nil
 	}
 	aliquotSum := getAliquotSum(n)
 	if aliquotSum == n {
